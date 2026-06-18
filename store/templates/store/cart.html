@@ -1,0 +1,44 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<h2 style="margin-bottom:20px;">Your Cart</h2>
+{% if cart.cartitem_set.all %}
+<table style="width:100%; border-collapse:collapse; background:white; border-radius:8px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+  <thead style="background:#2c3e50; color:white;">
+    <tr>
+      <th style="padding:12px;">Product</th>
+      <th>Price</th>
+      <th>Qty</th>
+      <th>Subtotal</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in cart.cartitem_set.all %}
+    <tr style="text-align:center; border-bottom:1px solid #eee;">
+      <td style="padding:12px;">{{ item.product.name }}</td>
+      <td>Rs. {{ item.product.price }}</td>
+      <td>
+        <a href="{% url 'decrease_quantity' item.id %}" class="btn btn-danger" style="padding:4px 8px;">-</a>
+        {{ item.quantity }}
+        <a href="{% url 'increase_quantity' item.id %}" class="btn btn-success" style="padding:4px 8px;">+</a>
+      </td>
+      <td>Rs. {{ item.get_subtotal }}</td>
+      <td><a href="{% url 'remove_item' item.id %}" class="btn btn-danger">Remove</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3" style="padding:12px; text-align:right; font-weight:bold;">Total:</td>
+      <td style="font-weight:bold; color:#e74c3c;">Rs. {{ cart.get_total }}</td>
+      <td></td>
+    </tr>
+  </tfoot>
+</table>
+<div style="margin-top:20px;">
+  <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
+</div>
+{% else %}
+  <p>Your cart is empty. <a href="{% url 'home' %}">Shop now</a></p>
+{% endif %}
+{% endblock %}

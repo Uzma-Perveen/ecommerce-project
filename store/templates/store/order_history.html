@@ -1,0 +1,35 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<h2 style="margin-bottom:20px;">My Orders</h2>
+{% if orders %}
+<table style="width:100%; border-collapse:collapse; background:white; border-radius:8px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+  <thead style="background:#2c3e50; color:white;">
+    <tr>
+      <th style="padding:12px;">Order ID</th>
+      <th>Date</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr style="text-align:center; border-bottom:1px solid #eee;">
+      <td style="padding:10px;">{{ order.order_id|truncatechars:12 }}</td>
+      <td>{{ order.created_at|date:"d M Y" }}</td>
+      <td>Rs. {{ order.total }}</td>
+      <td>
+        <span style="padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold;
+          background:{% if order.status == 'Delivered' %}#d4edda{% elif order.status == 'Confirmed' %}#fff3cd{% else %}#f8d7da{% endif %};">
+          {{ order.status }}
+        </span>
+      </td>
+      <td><a href="{% url 'order_detail' order.pk %}" class="btn">View</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p>You have no orders yet. <a href="{% url 'home' %}">Start shopping</a></p>
+{% endif %}
+{% endblock %}

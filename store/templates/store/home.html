@@ -1,0 +1,32 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<h2 style="margin: 20px 0;">All Products</h2>
+
+<form method="get" style="margin-bottom:20px;">
+  <input name="q" value="{{ query }}" placeholder="Search products..."
+         style="padding:8px; width:300px; border:1px solid #ccc; border-radius:4px;">
+  <button type="submit" class="btn">Search</button>
+</form>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px;">
+  {% for product in products %}
+  <div style="background:white; border-radius:8px; padding:16px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+    {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}"
+           style="width:100%; height:180px; object-fit:cover; border-radius:4px;">
+    {% endif %}
+    <h3 style="margin:10px 0 6px;">{{ product.name }}</h3>
+    <p style="color:#e74c3c; font-weight:bold;">Rs. {{ product.price }}</p>
+    {% if product.is_in_stock %}
+      <p style="color:green; font-size:13px;">In Stock ({{ product.stock }})</p>
+      <a href="{% url 'add_to_cart' product.pk %}" class="btn btn-success" style="margin-top:8px;">Add to Cart</a>
+    {% else %}
+      <p style="color:red; font-size:13px;">Out of Stock</p>
+    {% endif %}
+    <a href="{% url 'product_detail' product.pk %}" class="btn" style="margin-top:6px;">View Details</a>
+  </div>
+  {% empty %}
+    <p>No products found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

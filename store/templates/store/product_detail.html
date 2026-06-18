@@ -1,0 +1,18 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<div style="background:white; padding:30px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); max-width:600px;">
+  {% if product.image %}
+    <img src="{{ product.image.url }}" style="width:100%; max-height:300px; object-fit:cover; border-radius:6px;">
+  {% endif %}
+  <h2 style="margin:16px 0 8px;">{{ product.name }}</h2>
+  <p style="color:#e74c3c; font-size:20px; font-weight:bold;">Rs. {{ product.price }}</p>
+  <p style="margin:10px 0; color:#555;">{{ product.description }}</p>
+  {% if product.is_in_stock %}
+    <p style="color:green;">In Stock ({{ product.stock }} left)</p>
+    <a href="{% url 'add_to_cart' product.pk %}" class="btn btn-success" style="margin-top:12px;">Add to Cart</a>
+  {% else %}
+    <p style="color:red; font-weight:bold;">Out of Stock</p>
+  {% endif %}
+  <a href="{% url 'home' %}" class="btn" style="margin-top:10px;">← Back</a>
+</div>
+{% endblock %}
